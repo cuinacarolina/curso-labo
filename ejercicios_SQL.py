@@ -206,8 +206,50 @@ ejerciciodi= dd.sql( """  SELECT count(*) AS casos_total, MAX(c.cantidad) AS max
                     WHERE c.descripcion = 'Buenos Aires' AND c.anio = 2019
                     """).df()
 
-ejerciciodj= dd.sql( """  SELECT count(*) AS casos_total, MAX(c.cantidad) AS maxima, MIN(c.cantidad) AS minima, AVG(c.cantidad) AS promedio
-                    FROM casos_id_descripcion AS c
-                    WHERE COUNT(c.cantidad) >= 1000
-                    """).df()
-    
+#ejerciciodj= dd.sql( """  SELECT count(*) AS casos_total, MAX(c.cantidad) AS maxima, MIN(c.cantidad) AS minima, AVG(c.cantidad) AS promedio
+#                    FROM casos_id_descripcion AS c
+#                    WHERE COUNT(c.cantidad) >= 1000
+#                    """).df()
+# FALTO EJERCICIO D J
+casos_provincia_depto = dd.sql( """  
+                            SELECT c.*, d.descripcion AS n_depto
+                            FROM casos_id_descripcion AS c 
+                            INNER JOIN departamento AS d 
+                            ON c.id_depto = d.id 
+                            """).df()
+
+ejerciciodk = dd.sql( """  SELECT  n_depto, descripcion AS provincia, AVG(cantidad) AS promedio
+                            FROM casos_provincia_depto 
+                            WHERE anio = 2019 OR anio = 2020
+                            GROUP BY n_depto, anio, descripcion
+                            ORDER BY provincia ASC, n_depto ASC
+                            """).df()
+"""
+Devolver una tabla que tenga los siguientes campos: descripción de tipo de
+evento, id_depto, nombre de departamento, id_provincia, nombre de
+provincia, total de casos 2019, total de casos 2020.
+"""
+casos_evento = dd.sql ( """ SELECT c.*, e.descripcion AS n_evento
+                           FROM casos_provincia_depto AS c
+                           INNER JOIN tipoevento AS e
+                           ON c.id_tipoevento = e.id
+                           """).df()
+auxdl1 = dd.sql( """   SELECT n_depto, id_depto, n_depto, id_provincia, descripcion AS n_provincia, count(*) AS casos_2019
+                            FROM casos_evento 
+                            WHERE anio = 2019
+                            GROUP BY n_depto, id_depto, id_provincia, descripcion, anio
+                            ORDER BY n_depto ASC, id_provincia ASC, anio ASC 
+                            """).df()
+auxdl2 = dd.sql( """   SELECT n_depto, id_depto, n_depto, id_provincia, descripcion AS n_provincia, count(*) AS casos_2020
+                            FROM casos_evento 
+                            WHERE anio = 2020
+                            GROUP BY n_depto, id_depto, id_provincia, descripcion, anio
+                            ORDER BY n_depto ASC, id_provincia ASC, anio ASC 
+                            """).df()
+ejerciciodl = dd.sql( """
+                     SELECT aux1.*, aux2.casos_2020
+                     FROM auxdl1 AS aux1
+                     INNER JOIN auxdl2 AS aux2
+                     ON aux1.n_depto = aux2.n_depto 
+                     """ ).df()
+                     
