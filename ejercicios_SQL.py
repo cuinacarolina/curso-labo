@@ -252,4 +252,163 @@ ejerciciodl = dd.sql( """
                      INNER JOIN auxdl2 AS aux2
                      ON aux1.n_depto = aux2.n_depto 
                      """ ).df()
-                     
+# Devolver el departamento que tuvo la mayor cantidad de casos sin hacer uso de MAX, ORDER BY ni LIMIT.                     
+ejercicioea = dd.sql( """
+                    SELECT id_depto 
+                    FROM casos
+                    WHERE cantidad >= ALL (SELECT cantidad
+                                           FROM casos)
+                    """).df()
+# Devolver los tipo de evento que tienen casos asociados. (Utilizando ALL o ANY).
+
+ejercicioeb = dd.sql( """
+                    SELECT DISTINCT id_tipoevento
+                    FROM casos
+                    WHERE id_tipoevento = ANY (SELECT id
+                                               FROM tipoevento)
+                    """).df()
+                                              
+# Devolver los tipo de evento que tienen casos asociados (Utilizando IN, NOT IN).
+ejerciciofa = dd.sql( """
+                     SELECT DISTINCT id_tipoevento
+                     FROM casos 
+                     WHERE id_tipoevento IN ( SELECT id FROM tipoevento)
+    """).df()
+
+#  Devolver los tipo de evento que NO tienen casos asociados (Utilizando IN, NOT IN).
+
+ejerciciofb = dd.sql( """
+                     SELECT DISTINCT id
+                     FROM tipoevento
+                     WHERE id NOT IN ( SELECT id_tipoevento FROM casos)
+    """).df()
+
+# Devolver los tipo de evento que tienen casos asociados (Utilizando EXISTS, NOT EXISTS).
+ejercicioga = dd.sql( """
+                     SELECT DISTINCT id_tipoevento
+                     FROM casos 
+                     WHERE EXISTS ( SELECT id FROM tipoevento)
+    """).df()
+
+#Listar las provincias que tienen una cantidad total de casos mayor al promedio de casos del país. Hacer el listado agrupado por año.
+auxha = dd.sql( """
+                    SELECT id_provincia, COUNT(*) AS cantidad_anio, anio
+                    FROM casos_provincia 
+                    GROUP BY id_provincia, anio
+                    ORDER BY anio ASC, id_provincia ASC
+                    """).df()
+promedio_anio = dd.sql( """
+                    SELECT AVG(cantidad_anio) AS promedio, anio
+                                            FROM auxha
+                                            GROUP BY anio
+                                            ORDER BY anio ASC
+                    """).df()
+ejercicioha = dd.sql( """
+                    SELECT a.id_provincia, a.cantidad_anio, a.anio
+                    FROM auxha AS a 
+                    JOIN promedio_anio AS p
+                    ON a.anio = p.anio
+                    WHERE a.cantidad_anio >= p.promedio
+                    GROUP BY a.anio, a.id_provincia, a.cantidad_anio
+                    ORDER BY a.anio
+                    """).df()
+
+
+#Por cada año, listar las provincias que tuvieron una cantidad total 
+#de casos mayor a la cantidad total de casos que la provincia de Corrientes.
+ejerciciohb = dd.sql( """
+                    SELECT id_provincia, cantidad_anio, anio
+                    FROM auxha 
+                    WHERE (cantidad_anio >= (SELECT cantidad_anio FROM (SELECT *
+                                            FROM auxha 
+                                            WHERE id_provincia = 18))) AND id_provincia != 18
+                    GROUP BY anio, id_provincia, cantidad_anio
+                    ORDER BY anio ASC, id_provincia ASC 
+                    """).df()
+
+ejercicioia = dd.sql( """
+                    SELECT id, descripcion
+                    FROM departamento
+                    ORDER BY descripcion DESC, id ASC
+                    """).df()
+                
+ejercicioib = dd.sql( """
+                    SELECT descripcion
+                    FROM provincia 
+                    WHERE descripcion LIKE 'M%'
+                    """).df()
+ejercicioic = dd.sql( """
+                    SELECT descripcion
+                    FROM provincia 
+                    WHERE descripcion LIKE 'S___a%'
+                    """).df()
+
+ejercicioid = dd.sql( """
+                    SELECT descripcion
+                    FROM provincia 
+                    WHERE descripcion LIKE '%a'
+                    """).df()
+                    
+ejercicioie = dd.sql( """
+                    SELECT descripcion
+                    FROM provincia 
+                    WHERE descripcion LIKE '_____'
+                    """).df()
+                    
+ejercicioif = dd.sql( """
+                    SELECT descripcion
+                    FROM provincia 
+                    WHERE descripcion LIKE '%do%'
+                    """).df()
+
+ejercicioig = dd.sql( """
+                    SELECT descripcion
+                    FROM provincia 
+                    WHERE (descripcion LIKE '%do%') AND (id < 30)
+                    """).df()                    
+ejercicioih = dd.sql( """
+                    SELECT id AS codigo_depto, descripcion AS nombre_depto
+                    FROM departamento
+                    WHERE (descripcion LIKE '%san%') OR (descripcion LIKE '%San%')
+                    ORDER BY descripcion DESC
+                    """).df()  
+
+ejercicioii = dd.sql( """
+                    SELECT c.descripcion AS nom_provincia, c.n_depto AS nom_depto, c.anio, c.semana_epidemiologica, g.descripcion AS grupoetario, c.cantidad
+                    FROM casos_provincia_depto AS c
+                    JOIN grupoetario AS g
+                    ON c.id_grupoetario = g.id
+                    WHERE (c.cantidad > 10) AND (c.descripcion LIKE '%a')
+                    ORDER BY c.cantidad DESC, c.descripcion ASC, c.n_depto ASC, g.descripcion ASC
+                    
+                    """).df()  
+
+auxejercicioij = dd.sql( """
+                    SELECT c.descripcion AS nom_provincia, c.n_depto AS nom_depto, c.anio, c.semana_epidemiologica, g.descripcion AS grupoetario, c.cantidad
+                    FROM casos_provincia_depto AS c
+                    JOIN grupoetario AS g
+                    ON c.id_grupoetario = g.id
+                    WHERE c.descripcion LIKE '%a'
+                    ORDER BY c.cantidad DESC, c.descripcion ASC, c.n_depto ASC, g.descripcion ASC
+                    
+                    """).df()  
+
+ejercicioij = dd.sql(""" 
+                     SELECT *
+                     FROM auxejercicioij
+                     WHERE cantidad = (SELECT MAX(cantidad) FROM auxejercicioij)
+                   """ ).df()
+
+#Listar los id y descripción de los departamentos. Estos últimos sin tildes y en orden alfabético.
+
+ejercicioja = dd.sql(""" 
+                     SELECT id, 
+                     REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(descripcion, 'ó', 'o'), 'á', 'a'), 'é', 'e'), 'í', 'i'), 'ú', 'u') AS descripcion
+                     FROM departamento
+                     ORDER BY descripcion ASC
+                   """ ).df()
+#Listar los nombres de provincia en mayúscula, sin tildes y en orden alfabético
+ejerciciojb = dd.sql(""" 
+                     SELECT id, UPPER(descripcion) AS descripcion
+                     FROM ejercicioja
+                   """ ).df()
