@@ -15,6 +15,7 @@ import seaborn as sns
 from sklearn.datasets import load_iris
 from sklearn import tree
 import matplotlib.pyplot as plt
+from sklearn.linear_model import LinearRegression
 ## PIP INSTALL SCIKIT-LEARN
 carpeta = "/home/Estudiante/Descargas/"
 planilla = pd.read_excel(carpeta + "DatosTiemposDeReaccion-DerechaIzquierda.xlsx") 
