@@ -41,4 +41,13 @@ e. El nombre de un pozo petrolero no corresponde con el que debería ser, de acu
 f. Hay personas fallecidas que figuran como empleados participantes de cursos (por los cuáles la empresa que los informa consigue una exención impositiva). OPORTUNOS Y VIGENTES
 g. Las direcciones de los clientes no están actualizadas. OPORTUNOS Y VIGENTES
 
-HACER EL 5 Y EL 6 
+Ejercicio 5 
+En el modelo que se presenta podes llegar a escribir el nombre de la empresa mal como ocurre en el ejemplo. que el mismo codigo de la empresa en nombre dice "Servando Humberto Arriagada Peres" y el otro "Servando Humberto Arriagada Perez". Si hay un codigo unico por empresa es innecesario que también se escriba el nombre. Hay que hacer una tabla aparte. Lo mismo para el trabajador hay que hacer una tabla aparte. Se deberia establecer la estructura del nombre porque no puede haber celdas en mayuscula y otras en minuscula por ejemplo "LUIS ALFREDO CASTILLO", "Cesar Enrique Castillo". También para nomcomuna y codigo comuna hay que hacer una tabla parte.
+
+Yo lo plantearia asi
+Cuotas_a_vencer (rut_empresa, rut_trab, cod_comuna, valor_cuota)
+Trabajadores (rut_trab, nom_trab)
+Comunas (cod_comuna, nom_comuna)
+Empresas (rut_empresa, razon)
+
+Ejercicio 6 
