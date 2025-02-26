@@ -1,0 +1,44 @@
+Caso 1. Pozo petrolero perforado en una ubicación errónea por interpretación equivocada del sistema de coordenadas en uso. La empresa fue multada.
+
+Caso 2. Un banco local fue condenado a pagar a un cliente indemnizaciones por cientos de miles de pesos por haber sido incluido erróneamente en bases de datos de morosos.
+Fuente: Diario Clarín 14/02/2003
+https://www.clarin.com/economia/banco-debe-pagar-120000-incluir-mal-cliente-veraz_0_rJ4juMlAFg.html
+
+Caso 3. En un organismo del gobierno de un país latinoamericano se mandaron cartas a todas aquellas empresas beneficiadas por una norma. El 30% de la correspondencia volvió rechazada por problemas en la dirección.
+
+quienes fueron afectados?
+en el caso 1 la empresa porque debe jaber perdido muchisimo dinero.
+en el caso 2 el banco y seguramente el cliente porque no pudo haber accesido a hacer ciertas operaciones por estar mal categorizado
+en el caso 3 el gobierno y las empresas que no les llego el mail.
+
+ejercicio 3
+Dados los siguientes inconvenientes clasifíquelos según el origen de los mismos (instancia, proceso, modelo, software):
+a. Datos obligatorios que no se asumen como tales y por lo tanto no se cargan SOFTWARE
+b. Interfaces poco amigables SOFTWARE
+c. Rangos de valores que no se respetan PROCESOS
+d. Distintas personas cargan la misma información haciendo distintas asunciones. PROCESOS
+e. Gente que hace modificaciones pero no debería estar autorizada para hacerlas. PROCESOS
+f. Hay información que no está presente porque no hay forma de almacenarla. MODELO DE DATOS
+g. El mundo que se quiere representar evolucionó, pero esta situación no se ve reflejada en el sistema. MODELO DE DATOS
+h. Datos que han cambiado en el mundo real, y que no fueron actualizados INSTANCIA
+i. Datos que provienen de distintas fuentes y que no son consistentes. INSTANCIA
+j. Datos correspondiente al año, que han sido almacenados con dos dígitos en lugar de cuatro INSTANCIA
+k. Posibles valores completados en el campo región: INSTANCIA
+● ANETOFAGASTA
+● ANMTOFAGASTA
+● ANT0FAGASTA
+● ANTO9FAGASTA
+● ANTOAFAGASTA
+● ANTOFAAGASTA
+
+Ejercicio 4
+Dados los siguientes problemas, i) clasificarlos en función del atributo de calidad que se ve afectado; ii) determinar si el problema es de modelo o de datos.
+a. No se cargan unidades de medida en que se midió la profundidad de un pozo petrolero. COMPLETITUD
+b. No es posible almacenar el sistema de referencia. CONSISTENCIA Y CORRECTITUD
+c. Hay inconsistencias entre nombres de un mismo pozo petrolero en distintos sistemas. CONSISTENCIA Y CORRECTITUD
+d. La ubicación de una central telefónica no coincide con la ubicación real. CONSISTENCIA Y CORRECTITUD
+e. El nombre de un pozo petrolero no corresponde con el que debería ser, de acuerdo a la ley. OPORTUNOS Y VIGENTES
+f. Hay personas fallecidas que figuran como empleados participantes de cursos (por los cuáles la empresa que los informa consigue una exención impositiva). OPORTUNOS Y VIGENTES
+g. Las direcciones de los clientes no están actualizadas. OPORTUNOS Y VIGENTES
+
+HACER EL 5 Y EL 6 
